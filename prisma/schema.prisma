@@ -1,0 +1,189 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String       @id @default(cuid())
+  nameAr        String
+  nameEn        String
+  email         String       @unique
+  role          String
+  avatarInitial String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  settings      Settings?
+  simulations   Simulation[]
+  reports       Report[]
+  scenarios     Scenario[]
+}
+
+model Settings {
+  id                   String  @id @default(cuid())
+  userId               String  @unique
+  user                 User    @relation(fields: [userId], references: [id])
+  darkMode             Boolean @default(false)
+  desktopNotifications Boolean @default(true)
+  autoSave             Boolean @default(true)
+  mapQuality           String  @default("high")
+  language             String  @default("ar")
+  region               String  @default("ps")
+}
+
+model Street {
+  id          String        @id @default(cuid())
+  nameAr      String
+  nameEn      String?
+  type        String
+  coordinates String
+  width       Float
+  speedLimit  Int
+  congestion  Float         @default(0)
+  avgSpeed    Float         @default(30)
+  isProposed  Boolean       @default(false)
+  mapLayerId  String?
+  mapLayer    MapLayer?     @relation(fields: [mapLayerId], references: [id])
+  trafficData TrafficData[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Building {
+  id          String   @id @default(cuid())
+  nameAr      String?
+  nameEn      String?
+  type        String
+  coordinates String
+  footprint   String
+  height      Float
+  floors      Int
+  createdAt   DateTime @default(now())
+}
+
+model MapLayer {
+  id      String      @id @default(cuid())
+  key     String      @unique
+  nameAr  String
+  icon    String
+  enabled Boolean     @default(true)
+  streets Street[]
+  devices IoTDevice[]
+}
+
+model TrafficData {
+  id              String   @id @default(cuid())
+  streetId        String
+  street          Street   @relation(fields: [streetId], references: [id])
+  timestamp       DateTime @default(now())
+  congestion      Float
+  avgSpeed        Float
+  vehicleCount    Int
+  pedestrianCount Int      @default(0)
+  co2Level        Float    @default(0)
+}
+
+model IoTDevice {
+  id              String    @id @default(cuid())
+  nameAr          String
+  type            String
+  status          String
+  coordinates     String
+  dataType        String
+  batteryLevel    Float?
+  lastReading     String?
+  lastReadingAt   DateTime?
+  installDate     DateTime
+  maintenanceDue  DateTime?
+  firmwareVersion String?
+  mapLayerId      String?
+  mapLayer        MapLayer? @relation(fields: [mapLayerId], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Simulation {
+  id          String             @id @default(cuid())
+  nameAr      String
+  type        String
+  status      String
+  progress    Int                @default(0)
+  inputData   String
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  completedAt DateTime?
+  userId      String
+  user        User               @relation(fields: [userId], references: [id])
+  results     SimulationResult[]
+}
+
+model SimulationResult {
+  id                  String             @id @default(cuid())
+  simulationId        String
+  simulation          Simulation         @relation(fields: [simulationId], references: [id])
+  congestionReduction Float
+  speedIncrease       Float
+  emissionReduction   Float
+  safetyScore         Float
+  beforeMetrics       String
+  afterMetrics        String
+  explanationAr       String
+  dataPointsProcessed Int
+  modelAccuracy       Float
+  recommendations     AIRecommendation[]
+  createdAt           DateTime           @default(now())
+}
+
+model AIRecommendation {
+  id                 String            @id @default(cuid())
+  simulationResultId String?
+  simulationResult   SimulationResult? @relation(fields: [simulationResultId], references: [id])
+  titleAr            String
+  descriptionAr      String
+  metrics            String
+  priority           String
+  type               String
+  createdAt          DateTime          @default(now())
+}
+
+model Scenario {
+  id            String   @id @default(cuid())
+  nameAr        String
+  descriptionAr String
+  status        String
+  impact        String
+  color         String
+  metrics       String
+  reliability   Float?
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Report {
+  id          String    @id @default(cuid())
+  titleAr     String
+  type        String
+  status      String
+  fileSize    String?
+  pageCount   Int?
+  dateAr      String
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+}
+
+model Alert {
+  id            String   @id @default(cuid())
+  titleAr       String
+  descriptionAr String
+  type          String
+  severity      String
+  isRead        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
