@@ -43,7 +43,7 @@ interface Report {
   user?: { nameAr: string; avatarInitial: string };
 }
 
-const REPORT_TYPES: Record<string, { labelAr: string; icon: React.ElementType; color: string; description: string }> = {
+const REPORT_TYPES: Record<string, { labelAr: string; icon: React.ComponentType<any>; color: string; description: string }> = {
   traffic:     { labelAr: "تقرير المرور",          icon: BarChart2,       color: "#00AEEF", description: "تحليل تدفق المركبات والازدحام وأوقات الذروة" },
   simulation:  { labelAr: "تقرير المحاكاة",        icon: FileBarChart,   color: "#8B5CF6", description: "نتائج نماذج الذكاء الاصطناعي والتنبؤات المستقبلية" },
   environment: { labelAr: "التقرير البيئي",         icon: FilePieChart,   color: "#10B981", description: "انبعاثات CO₂ وجودة الهواء والأثر البيئي" },
@@ -52,7 +52,7 @@ const REPORT_TYPES: Record<string, { labelAr: string; icon: React.ElementType; c
   monthly:     { labelAr: "التقرير الشهري",         icon: FileText,        color: "#6B7280", description: "تقرير شامل عن أنشطة الشهر الماضي" },
 };
 
-const STATUS_MAP: Record<string, { labelAr: string; color: string; icon: React.ElementType }> = {
+const STATUS_MAP: Record<string, { labelAr: string; color: string; icon: React.ComponentType<any> }> = {
   ready:      { labelAr: "جاهز",       color: "#22C55E", icon: CheckCircle },
   generating: { labelAr: "جارٍ الإنشاء", color: "#00AEEF", icon: Loader2    },
   pending:    { labelAr: "في الانتظار", color: "#F59E0B", icon: Clock       },

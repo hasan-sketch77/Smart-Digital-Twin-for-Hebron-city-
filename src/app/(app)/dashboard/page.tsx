@@ -91,7 +91,7 @@ function KpiCard({
   color,
   delay = 0,
 }: {
-  icon: React.ElementType;
+  icon: React.ComponentType<any>;
   labelAr: string;
   value: string | number;
   unit?: string;

@@ -48,7 +48,7 @@ interface IoTDevice {
   firmwareVersion: string | null;
 }
 
-const DEVICE_TYPES: Record<string, { labelAr: string; icon: React.ElementType; color: string; unit: string }> = {
+const DEVICE_TYPES: Record<string, { labelAr: string; icon: React.ComponentType<any>; color: string; unit: string }> = {
   camera:    { labelAr: "كاميرا مراقبة",    icon: Camera,    color: "#00AEEF", unit: "FPS" },
   traffic:   { labelAr: "مستشعر مرور",      icon: Radio,     color: "#F59E0B", unit: "مركبة/ساعة" },
   weather:   { labelAr: "محطة طقس",          icon: CloudRain, color: "#10B981", unit: "°م" },
@@ -57,7 +57,7 @@ const DEVICE_TYPES: Record<string, { labelAr: string; icon: React.ElementType; c
   noise:     { labelAr: "مستشعر الضوضاء",   icon: Radio,     color: "#EF4444", unit: "dB" },
 };
 
-const STATUS_CONFIG: Record<string, { labelAr: string; color: string; icon: React.ElementType }> = {
+const STATUS_CONFIG: Record<string, { labelAr: string; color: string; icon: React.ComponentType<any> }> = {
   active:  { labelAr: "نشط",    color: "#22C55E", icon: CheckCircle },
   warning: { labelAr: "تحذير",  color: "#F59E0B", icon: AlertTriangle },
   error:   { labelAr: "خطأ",    color: "#EF4444", icon: XCircle     },

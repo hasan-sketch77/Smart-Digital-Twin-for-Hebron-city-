@@ -41,7 +41,7 @@ interface Scenario {
   createdAt: string;
 }
 
-const STATUS_MAP: Record<string, { labelAr: string; color: string; icon: React.ElementType }> = {
+const STATUS_MAP: Record<string, { labelAr: string; color: string; icon: React.ComponentType<any> }> = {
   active:   { labelAr: "نشط",         color: "#22C55E", icon: CheckCircle },
   draft:    { labelAr: "مسودة",        color: "#64748b", icon: FileEdit    },
   pending:  { labelAr: "في الانتظار",  color: "#F59E0B", icon: Clock       },
@@ -165,7 +165,7 @@ function ScenarioCard({
 
 // ── Metrics Radar ──
 function MetricsRadar({ metrics }: { metrics: Scenario["metrics"] }) {
-  const safeNum = (n: number | undefined, def: number = 0) => (isNaN(n) || n == null) ? def : n;
+  const safeNum = (n: number | undefined, def: number = 0) => (n == null || isNaN(n)) ? def : n;
   const data = [
     { subject: "تقليل ازدحام", A: safeNum(metrics.congestionReduction, 0) },
     { subject: "رفع السرعة",   A: safeNum(metrics.speedIncrease, 0) },

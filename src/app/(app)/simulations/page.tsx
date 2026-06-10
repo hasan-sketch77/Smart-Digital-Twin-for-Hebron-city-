@@ -82,7 +82,7 @@ const STREET_OPTIONS = [
   "شارع الملك داود",
 ];
 
-const STATUS_CONFIG: Record<SimStatus, { labelAr: string; color: string; icon: React.ElementType }> = {
+const STATUS_CONFIG: Record<SimStatus, { labelAr: string; color: string; icon: React.ComponentType<any> }> = {
   pending:   { labelAr: "في الانتظار", color: "#64748b", icon: Clock       },
   running:   { labelAr: "جارٍ",        color: "#00AEEF", icon: Play        },
   completed: { labelAr: "مكتمل",       color: "#22C55E", icon: CheckCircle },
@@ -160,7 +160,7 @@ function SimulationCard({
 
 // ── Result panel ──
 function ResultPanel({ result, simName }: { result: SimResult; simName: string }) {
-  const safeNum = (n: number | undefined, def: number = 0) => isNaN(n) || n == null ? def : n;
+  const safeNum = (n: number | undefined, def: number = 0) => n == null || isNaN(n) ? def : n;
 
   const radarData = [
     { subject: "تقليل الازدحام", A: safeNum(result.congestionReduction, 0) },

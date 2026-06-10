@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -241,7 +241,7 @@ async function main() {
 
   // Create traffic data (30 days x 24 hours for each street)
   const now = new Date();
-  const trafficBatch: Parameters<typeof prisma.trafficData.createMany>[0]["data"] = [];
+  const trafficBatch: Prisma.TrafficDataCreateManyInput[] = [];
 
   for (let si = 0; si < streetIds.length; si++) {
     const baseCongestion = streetsData[si].congestion;
